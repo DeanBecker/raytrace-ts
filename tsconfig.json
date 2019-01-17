@@ -1,13 +1,16 @@
 {
+    "include": [
+        "*.ts",
+        "**/*.ts"
+    ],
+    "exclude": [
+        "node_modules"
+    ],
     "compilerOptions": {
+        "noImplicitAny": true,
         "target": "es5",
-        "module": "umd",
-        "moduleResolution": "classic",
-        "sourceMap": true,
         "strict": true,
         "alwaysStrict": true,
-        "outDir": "app/js",
-    },
-    "include": ["*.ts", "**/*.ts"],
-    "exclude": ["node_modules"]
+        "sourceMap": true
+    }
 }

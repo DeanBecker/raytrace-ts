@@ -1,12 +1,18 @@
 {
     "scripts": {
-        "prestart": "npm run build",
         "test": "echo \"Error: no tests\" && exit 1",
-        "build": "tsc",
         "start": "node app/js/server.js"
     },
     "dependencies": {},
     "devDependencies": {
-        "@types/node": "^10.12.18"
+        "@types/node": "^10.12.18",
+        "browserify": "^16.2.3",
+        "gulp": "^4.0.0",
+        "gulp-typescript": "^5.0.0",
+        "gulp-util": "^3.0.8",
+        "tsify": "^4.0.1",
+        "typescript": "^3.2.2",
+        "vinyl-source-stream": "^2.0.0",
+        "watchify": "^3.11.0"
     }
 }
