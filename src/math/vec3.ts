@@ -1,3 +1,8 @@
+export interface Refraction {
+    refraction: Vec3,
+    refracted: boolean
+}
+
 export class Vec3 {
     constructor(c1: number, c2: number, c3: number) {
         this.X = c1;
@@ -141,5 +146,33 @@ export class Vec3 {
         v1.Subtract(n1);
 
         return v1;
+    }
+
+    static Refract(v: Vec3, n: Vec3, niOverNt: number): Refraction {
+        let unitVecV = this.CreateUnitVector(v);
+        let dt = this.Dot(unitVecV, n);
+        let discriminant = 1.0 - niOverNt * niOverNt * (1 - dt * dt);
+        if (discriminant > 0) {
+            let n2 = n.Copy();
+            n2.MultiplyScalar(dt);
+
+            let n3 = n.Copy();
+            n3.MultiplyScalar(Math.sqrt(discriminant));
+
+            let refraction = unitVecV.Copy();
+            refraction.Subtract(n2);
+            refraction.MultiplyScalar(niOverNt);
+            refraction.Subtract(n3);
+
+            return {
+                refraction,
+                refracted: true
+            };
+        } else {
+            return {
+                refraction: new Vec3(0, 0, 0),
+                refracted: false
+            }
+        }
     }
 }

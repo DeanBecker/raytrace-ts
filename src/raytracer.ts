@@ -7,6 +7,7 @@ import { Camera } from './camera';
 import { Diffuse } from './material/diffuse';
 import { Material } from './material/material';
 import { Metal } from './material/metal';
+import { Dielectric } from './material/dielectric';
  
 export class RayTracer {
     private readonly PIXEL_WIDTH: number; 
@@ -15,7 +16,7 @@ export class RayTracer {
     private readonly RESOLUTION_WIDTH = 1000;
     private readonly RESOLUTION_HEIGHT = 540;
 
-    private readonly AA_SAMPLES = 10;
+    private readonly AA_SAMPLES = 15;
 
     constructor(
         private context: CanvasRenderingContext2D,
@@ -150,7 +151,7 @@ export class RayTracer {
         };
 
         if (world.Hit(ray, 0.001, Number.MAX_VALUE, rec)) {
-            if (depth < 25) {
+            if (depth < 50) {
                 let scatter = rec.material.Scatter(ray, rec);
                 if (scatter.absorbed) {
                     let attenuation = scatter.attenuation.Copy();
@@ -194,10 +195,11 @@ export class RayTracer {
 //#region RayTracer Output Functions
     public DrawMixedMaterials(): void {
         let world = new HittableList();
-        world.Hittables.push(new Sphere(new Vec3(0, 0, -1), 0.5, new Diffuse(new Vec3(0.8, 0.3, 0.3))));
+        world.Hittables.push(new Sphere(new Vec3(0, 0, -1), 0.5, new Diffuse(new Vec3(0.1, 0.2, 0.5))));
         world.Hittables.push(new Sphere(new Vec3(0, -100.5, -1), 100, new Diffuse(new Vec3(0.8, 0.8, 0.0))));
-        world.Hittables.push(new Sphere(new Vec3(1, 0, -1), 0.5, new Metal(new Vec3(0.8, 0.6, 0.2))));
-        world.Hittables.push(new Sphere(new Vec3(-1, 0, -1), 0.5, new Metal(new Vec3(0.8, 0.8, 0.8))));
+        world.Hittables.push(new Sphere(new Vec3(1, 0, -1), 0.5, new Metal(new Vec3(0.8, 0.6, 0.2), 0.05)));
+        world.Hittables.push(new Sphere(new Vec3(-1, 0, -1), 0.5, new Dielectric(1.5)));
+        world.Hittables.push(new Sphere(new Vec3(-1, 0, -1), -0.45, new Dielectric(1.5)));
 
         let camera = new Camera();
 
