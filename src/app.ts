@@ -16,6 +16,7 @@ import { RayTracer } from './raytracer';
     // rt.DrawNormalMapWorld();
     // rt.DrawNormalMapWithCameraAndSuperSampling();
     // rt.DrawDiffusedSpheres();
-    rt.DrawMixedMaterials();
+    // rt.DrawMixedMaterials();
     // rt.DrawCameraTest_1();
+    rt.DrawRandomWorld();
 })();
