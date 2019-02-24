@@ -13,10 +13,11 @@ export class RayTracer {
     private readonly PIXEL_WIDTH: number; 
     private readonly PIXEL_HEIGHT: number;
     
-    private readonly RESOLUTION_WIDTH = 1000;
-    private readonly RESOLUTION_HEIGHT = 540;
+    private readonly RESOLUTION_WIDTH = 896;
+    private readonly RESOLUTION_HEIGHT = 504;
 
     private readonly AA_SAMPLES = 15;
+    private readonly REFLECTION_DEPTH = 25;
 
     constructor(
         private context: CanvasRenderingContext2D,
@@ -151,7 +152,7 @@ export class RayTracer {
         };
 
         if (world.Hit(ray, 0.001, Number.MAX_VALUE, rec)) {
-            if (depth < 50) {
+            if (depth < this.REFLECTION_DEPTH) {
                 let scatter = rec.material.Scatter(ray, rec);
                 if (scatter.absorbed) {
                     let attenuation = scatter.attenuation.Copy();
@@ -198,10 +199,9 @@ export class RayTracer {
         world.Hittables.push(new Sphere(new Vec3(0, 0, -1), 0.5, new Diffuse(new Vec3(0.1, 0.2, 0.5))));
         world.Hittables.push(new Sphere(new Vec3(0, -100.5, -1), 100, new Diffuse(new Vec3(0.8, 0.8, 0.0))));
         world.Hittables.push(new Sphere(new Vec3(1, 0, -1), 0.5, new Metal(new Vec3(0.8, 0.6, 0.2), 0.05)));
-        world.Hittables.push(new Sphere(new Vec3(-1, 0, -1), 0.5, new Dielectric(1.5)));
-        world.Hittables.push(new Sphere(new Vec3(-1, 0, -1), -0.45, new Dielectric(1.5)));
+        world.Hittables.push(new Sphere(new Vec3(-1, 0, -1), 0.4, new Dielectric(1.5)));
 
-        let camera = new Camera();
+        let camera = new Camera(90, this.RESOLUTION_WIDTH / this.RESOLUTION_HEIGHT);
 
         for (let j = this.RESOLUTION_HEIGHT - 1; j >= 0; j--) {
             for (let i = 0; i < this.RESOLUTION_WIDTH; i++) {
@@ -231,7 +231,7 @@ export class RayTracer {
         world.Hittables.push(new Sphere(new Vec3(0, 0, -1), 0.5));
         world.Hittables.push(new Sphere(new Vec3(0, -100.5, -1), 100));
 
-        let camera = new Camera();
+        let camera = new Camera(90, this.RESOLUTION_WIDTH / this.RESOLUTION_HEIGHT);
 
         for (let j = this.RESOLUTION_HEIGHT - 1; j >= 0; j--) {
             for (let i = 0; i < this.RESOLUTION_WIDTH; i++) {
@@ -261,7 +261,7 @@ export class RayTracer {
         world.Hittables.push(new Sphere(new Vec3(0, 0, -1), 0.5));
         world.Hittables.push(new Sphere(new Vec3(0, -100.5, -1), 100));
 
-        let camera = new Camera();
+        let camera = new Camera(90, this.RESOLUTION_WIDTH / this.RESOLUTION_HEIGHT);
 
         for (let j = this.RESOLUTION_HEIGHT - 1; j >= 0; j--) {
             for (let i = 0; i < this.RESOLUTION_WIDTH; i++) {
