@@ -17,4 +17,5 @@ import { RayTracer } from './raytracer';
     // rt.DrawNormalMapWithCameraAndSuperSampling();
     // rt.DrawDiffusedSpheres();
     rt.DrawMixedMaterials();
+    // rt.DrawCameraTest_1();
 })();

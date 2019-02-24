@@ -192,8 +192,35 @@ export class RayTracer {
         }
     }
 
+    private Draw(camera: Camera, world: HittableList) {
+        for (let j = this.RESOLUTION_HEIGHT - 1; j >= 0; j--) {
+            for (let i = 0; i < this.RESOLUTION_WIDTH; i++) {
+                let color = new Vec3(0.0, 0.0, 0.0);
+                for (let s = 0; s < this.AA_SAMPLES; s++) {
+                    let u = (i + Math.random()) / this.RESOLUTION_WIDTH;
+                    let v = (this.RESOLUTION_HEIGHT - j + Math.random()) / this.RESOLUTION_HEIGHT;
+                    let r = camera.GetRay(u, v);
+                    let c = this.ColorMaterial(r, world, 0);
+                    color.Add(c);
+                }
+                color.DivideScalar(this.AA_SAMPLES);
+                color = new Vec3(Math.sqrt(color.R), Math.sqrt(color.G), Math.sqrt(color.B));
+                this.FillPixel(i * this.PIXEL_WIDTH, j * this.PIXEL_HEIGHT, 0, Math.floor(255.99 * color.R), Math.floor(255.9 * color.G), Math.floor(255.9 * color.B), 1);
+            }
+        }
+    }
 
 //#region RayTracer Output Functions
+    public DrawCameraTest_1(): void {
+        let world = new HittableList();
+        let R = Math.cos(Math.PI / 4);
+        world.Hittables.push(new Sphere(new Vec3(-R, 0, -1), R, new Diffuse(new Vec3(0, 0, 1))));
+        world.Hittables.push(new Sphere(new Vec3(R, 0, -1), R, new Diffuse(new Vec3(1, 0, 0))));
+
+        let camera = new Camera(new Vec3(-2, 2, 1), new Vec3(0, 0, -1), new Vec3(0, 1, 0), 90, this.RESOLUTION_WIDTH / this.RESOLUTION_HEIGHT);
+        this.Draw(camera, world);
+    }
+    
     public DrawMixedMaterials(): void {
         let world = new HittableList();
         world.Hittables.push(new Sphere(new Vec3(0, 0, -1), 0.5, new Diffuse(new Vec3(0.1, 0.2, 0.5))));
@@ -201,7 +228,7 @@ export class RayTracer {
         world.Hittables.push(new Sphere(new Vec3(1, 0, -1), 0.5, new Metal(new Vec3(0.8, 0.6, 0.2), 0.05)));
         world.Hittables.push(new Sphere(new Vec3(-1, 0, -1), 0.4, new Dielectric(1.5)));
 
-        let camera = new Camera(90, this.RESOLUTION_WIDTH / this.RESOLUTION_HEIGHT);
+        let camera = new Camera(new Vec3(-2, 2, 1), new Vec3(0, 0, -1), new Vec3(0, 1, 0), 35, this.RESOLUTION_WIDTH / this.RESOLUTION_HEIGHT);
 
         for (let j = this.RESOLUTION_HEIGHT - 1; j >= 0; j--) {
             for (let i = 0; i < this.RESOLUTION_WIDTH; i++) {
@@ -231,7 +258,7 @@ export class RayTracer {
         world.Hittables.push(new Sphere(new Vec3(0, 0, -1), 0.5));
         world.Hittables.push(new Sphere(new Vec3(0, -100.5, -1), 100));
 
-        let camera = new Camera(90, this.RESOLUTION_WIDTH / this.RESOLUTION_HEIGHT);
+        let camera = new Camera(new Vec3(-2, 2, 1), new Vec3(0, 0, -1), new Vec3(0, 1, 0), 90, this.RESOLUTION_WIDTH / this.RESOLUTION_HEIGHT);
 
         for (let j = this.RESOLUTION_HEIGHT - 1; j >= 0; j--) {
             for (let i = 0; i < this.RESOLUTION_WIDTH; i++) {
@@ -261,7 +288,7 @@ export class RayTracer {
         world.Hittables.push(new Sphere(new Vec3(0, 0, -1), 0.5));
         world.Hittables.push(new Sphere(new Vec3(0, -100.5, -1), 100));
 
-        let camera = new Camera(90, this.RESOLUTION_WIDTH / this.RESOLUTION_HEIGHT);
+        let camera = new Camera(new Vec3(-2, 2, 1), new Vec3(0, 0, -1), new Vec3(0, 1, 0), 90, this.RESOLUTION_WIDTH / this.RESOLUTION_HEIGHT);
 
         for (let j = this.RESOLUTION_HEIGHT - 1; j >= 0; j--) {
             for (let i = 0; i < this.RESOLUTION_WIDTH; i++) {
