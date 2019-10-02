@@ -5,7 +5,6 @@ import { HitRecord } from './math/irayhittable';
 import { Sphere } from './math/sphere';
 import { Camera } from './camera';
 import { Diffuse } from './material/diffuse';
-import { Material } from './material/material';
 import { Metal } from './material/metal';
 import { Dielectric } from './material/dielectric';
  
@@ -13,11 +12,11 @@ export class RayTracer {
     private readonly PIXEL_WIDTH: number; 
     private readonly PIXEL_HEIGHT: number;
     
-    private readonly RESOLUTION_WIDTH = 896;
-    private readonly RESOLUTION_HEIGHT = 504;
+    private readonly RESOLUTION_WIDTH = 1280;
+    private readonly RESOLUTION_HEIGHT = 720;
 
-    private readonly AA_SAMPLES = 10;
-    private readonly REFLECTION_DEPTH = 25;
+    private readonly AA_SAMPLES = 75;
+    private readonly REFLECTION_DEPTH = 35;
 
     constructor(
         private context: CanvasRenderingContext2D,
@@ -151,7 +150,7 @@ export class RayTracer {
             material: new Diffuse(new Vec3(0, 0, 0))
         };
 
-        if (world.Hit(ray, 0.001, Number.MAX_VALUE, rec)) {
+        if (world.Hit(ray, 0.0001, Number.MAX_VALUE, rec)) {
             if (depth < this.REFLECTION_DEPTH) {
                 let scatter = rec.material.Scatter(ray, rec);
                 if (scatter.absorbed) {
@@ -252,18 +251,19 @@ export class RayTracer {
     }
     
     private GetCamera(): Camera {
-        let lookFrom = new Vec3(3, 3, 2);
+        // let lookFrom = new Vec3(3, 3, 2);
         // let lookFrom = new Vec3(-2, 2, 2);
-        let lookAt = new Vec3(0, 0, -1);
-        let fov = 75;
+        let lookFrom = new Vec3(13, 2, 3);
+        let lookAt = new Vec3(0, 0, 0);
+        let vFov = 45;
 
         let distanceToFocus = lookFrom.Copy();
         distanceToFocus.Subtract(lookAt);
-        let aperture = 0.01;
+        let aperture = 0.05;
 
         let aspectRatio = this.RESOLUTION_WIDTH / this.RESOLUTION_HEIGHT;
 
-        return new Camera(lookFrom, lookAt, new Vec3(0, 1, 0), fov, aspectRatio, aperture, distanceToFocus.Length);
+        return new Camera(lookFrom, lookAt, new Vec3(0, 1, 0), vFov, aspectRatio, aperture, distanceToFocus.Length);
     }
     
     public DrawRandomWorld(): void {
