@@ -12,11 +12,11 @@ export class RayTracer {
     private readonly PIXEL_WIDTH: number; 
     private readonly PIXEL_HEIGHT: number;
     
-    private readonly RESOLUTION_WIDTH = 1280;
-    private readonly RESOLUTION_HEIGHT = 720;
+    private readonly RESOLUTION_WIDTH = 960;
+    private readonly RESOLUTION_HEIGHT = 540;
 
-    private readonly AA_SAMPLES = 75;
-    private readonly REFLECTION_DEPTH = 35;
+    private readonly AA_SAMPLES = 25;
+    private readonly REFLECTION_DEPTH = 15;
 
     constructor(
         private context: CanvasRenderingContext2D,
@@ -213,7 +213,7 @@ export class RayTracer {
     private GetRandomWorld(): HittableList {
         let staticVec = new Vec3(4, 0.2, 0);
         let world = new HittableList();
-        let n = 500;
+        let n = 5;
         world.Hittables.push(new Sphere(new Vec3(0, -1000, 0), 1000, new Diffuse(new Vec3(0.5, 0.5, 0.5))));
 
         let i = 1;
