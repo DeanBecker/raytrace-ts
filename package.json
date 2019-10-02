@@ -5,15 +5,15 @@
     },
     "dependencies": {},
     "devDependencies": {
-        "@types/node": "^10.12.18",
-        "browserify": "^16.2.3",
-        "gulp": "^4.0.0",
-        "gulp-typescript": "^5.0.0",
-        "gulp-util": "^3.0.8",
+        "@types/node": "^10.14.19",
+        "browserify": "^16.5.0",
+        "fancy-log": "^1.0.0",
+        "gulp": "^4.0.2",
+        "gulp-typescript": "^5.0.1",
         "tsify": "^4.0.1",
-        "tslint": "^5.12.1",
-        "typescript": "^3.2.2",
+        "tslint": "^5.20.0",
+        "typescript": "^3.6.3",
         "vinyl-source-stream": "^2.0.0",
-        "watchify": "^3.11.0"
+        "watchify": "^3.11.1"
     }
 }

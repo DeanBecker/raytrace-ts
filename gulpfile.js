@@ -3,7 +3,7 @@ var browserify = require("browserify");
 var source = require('vinyl-source-stream');
 var watchify = require("watchify");
 var tsify = require("tsify");
-var gutil = require("gulp-util");
+var flog = require("fancy-log");
 var paths = {
     pages: ['src/*.html']
 };
@@ -30,4 +30,4 @@ function bundle() {
 
 gulp.task("default", gulp.series("copy-html", bundle));
 watchedBrowserify.on("update", bundle);
-watchedBrowserify.on("log", gutil.log);
+watchedBrowserify.on("log", flog);
